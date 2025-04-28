@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # URL del stream original (CAMBIÁLO si querés otro)
-ORIGINAL_URL = "https://proxy-stream-3aeo.onrender.com/stream.m3u8"
+ORIGINAL_URL = "http://190.94.160.6:8081/hls"
 
 @app.route('/')
 def home():
