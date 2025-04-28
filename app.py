@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # URL del stream original (CAMBIÁLO si querés otro)
-ORIGINAL_URL = "http://190.94.160.6:8081/hls"
+ORIGINAL_URL = "http://190.94.160.6:8081/hls/hd-live.m3u8"
 
 @app.route('/')
 def home():
