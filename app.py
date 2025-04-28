@@ -1,26 +1,16 @@
-from flask import Flask, Response, request
+from flask import Flask, Response, send_file
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app)  # <-- Esto permite CORS automáticamente
 
-# URL ORIGINAL DEL STREAM
-ORIGINAL_STREAM_BASE = 'http://190.94.160.6:8081/hls/'  # <- ajustalo si cambia
-
-@app.route('/')
-def home():
-    return "Servidor Proxy funcionando para el Stream."
+ORIGINAL_STREAM_URL = "http://190.94.160.6:8081/hls/hd-live.m3u8"
 
 @app.route('/stream.m3u8')
 def stream_m3u8():
-    url = ORIGINAL_STREAM_BASE + 'hd-live.m3u8'
-    r = requests.get(url)
-    return Response(r.content, content_type='application/vnd.apple.mpegurl')
-
-@app.route('/<path:filename>')
-def stream_ts(filename):
-    url = ORIGINAL_STREAM_BASE + filename
-    r = requests.get(url, stream=True)
-    return Response(r.raw, content_type='video/MP2T')
+    r = requests.get(ORIGINAL_STREAM_URL, stream=True)
+    return Response(r.iter_content(chunk_size=1024), content_type=r.headers['Content-Type'])
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host="0.0.0.0", port=10000)
